@@ -47,7 +47,7 @@ def update_forecasts():
         querystring = {"q": location, "lat": "35", "lon": "139", "cnt": "16", "units": "metric"}
         headers = {
             'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com",
-            'x-rapidapi-key': "f3a3fcb5dfmsha8f823b07cefa29p1dd990jsnce5fa70d437a"
+            'x-rapidapi-key': ra_key
         }
         response = requests.request("GET", url, headers=headers, params=querystring)
         filename = "forecasts/" + city + ".json"    # writing joint raw forecast
