@@ -17,8 +17,8 @@ db = SQLAlchemy(app)
 class Manager:
     def __init__(self):
         self.callbacks = {}
-        self.imp_forecast = []
-        self.params = []
+        self.get_forecasts = []      # dla wyszukanych prognoz
+        self.params = []            # dla parametrów wyszukiwania z formularza
 
     def set(self, procedure):
         def decorate(callback):
@@ -67,12 +67,15 @@ def db_put(oper_args):
 
 @mng.set("db_get")
 def db_get(oper_args):
-    date_st = int(time.mktime(oper_args[0].timetuple()))
-    date_end = int(time.mktime(oper_args[0].timetuple()))
-    print("dates")
-    print(date_st)
-    print(date_end)
-    # db.session.query(Manager).filter(Forecasts.date <= )
+    # date_start = int(time.mktime(oper_args[0].timetuple()))
+    # date_end = int(time.mktime(oper_args[1].timetuple()))
+    date_start = 1631224800 - (2 * 24 * 60 * 60)    # 2021-09-08
+    date_end = 1631224800                           # 2021-09-10
+    db_query = db.session.query(Manager).filter(Forecasts.date >= date_start\
+                                     and Forecasts.date <= date_end).all()
+    mng.get_forecasts = db_query
+    print(db_query)
+
 
 
 
