@@ -14,6 +14,9 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///manager.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+locations_scoring = {}
+locations_forecasts = {}
+
 class Manager:
     def __init__(self):
         self.callbacks = {}
@@ -69,54 +72,63 @@ def db_put(oper_args):
 def db_get(oper_args):
     date_start = int(time.mktime(oper_args[0].timetuple()))
     date_end = int(time.mktime(oper_args[1].timetuple()))
+    print(date_start)
+    print(date_end)
     # date_start = 1631224800 - (2 * 24 * 60 * 60)    # 2021-09-08
     # date_end = 1631224800                           # 2021-09-10
-    db_query = db.session.query(Manager).filter(Forecasts.date >= date_start\
-                                     and Forecasts.date <= date_end).all()
+    db_query = db.session.query(Forecasts).filter(Forecasts.date >= date_start).\
+            filter(Forecasts.date <= date_end).all()
     mng.get_forecasts = db_query
-    print(db_query)
-
-
-
-# @mng.set("scoring")
-# def scoring():
-#     db_description = "Clouds"
-#     db_temp = 21.2
-#     db_Forecasts_description = db_description
-#     db_Forecasts_temp = db_temp
-#     ask_for = ['2021-09-05', '2021-09-12', 'With love:-)', 'OK, accepted', 'Rather not', 'I hate it:-(', 'Rather not', 18.0, 25.0]
-#     if db_Forecasts_temp >= ask_for[7] and db_Forecasts_temp <= ask_for[8]:
-#         temp_score = 2
-#     elif db_Forecasts_temp > (ask_for[8] + 8) or db_Forecasts_temp < (ask_for[7] - 8):
-#         temp_score = -2
-#     else:
-#         temp_score = 0
-#     # print(temp_score)
-#     scoring_table = {"With love:-)": 3, "OK, accepted": 1, "Rather not": -1,
-#                      "I hate it:-(": -5}
-#     scoring_clear = scoring_table[ask_for[2]]
-#     # print(scoring_clear)
-#     scoring_clouds = scoring_table[ask_for[3]]
-#     # print(scoring_clouds)
-#     scoring_overcast = scoring_table[ask_for[4]]
-#     # print(scoring_overcast)
-#     scoring_rain = scoring_table[ask_for[5]]
-#     # print(scoring_rain)
-#     scoring_snow = scoring_table[ask_for[6]]
-#     # print(scoring_snow)
-#     if db_Forecasts_description == "Clear":
-#         descr_score = scoring_clear
-#     if db_Forecasts_description == "Clouds":
-#         descr_score = scoring_clouds
-#     if db_Forecasts_description == "Overcoast":
-#         descr_score = scoring_overcast
-#     if db_Forecasts_description == "Rain":
-#         descr_score = scoring_rain
-#     if db_Forecasts_description == "Snow":
-#         descr_score = scoring_snow
-#     # print(descr_score)
-#     daily_score = temp_score + descr_score
-#     # print(daily_score)
-
-
+    # print(db_query)                     # Na razie ma wydrukować jakąś postać
+    nr_forec = len(db_query)
+    print(nr_forec)
+    nr_forec = 0
+    for element in db_query:
+        db_city = db_query[nr_forec].city
+        db_date = db_query[nr_forec].date
+        db_description = db_query[nr_forec].description
+        db_temp = db_query[nr_forec].temp
+        nr_forec += 1
+        if db_temp >= oper_args[7] and db_temp <= oper_args[8]:
+            temp_score = 2
+        elif db_temp > (oper_args[8] + 8) or db_temp < (oper_args[7] - 8):
+            temp_score = -2
+        else:
+            temp_score = 0
+        # print(temp_score)
+        scoring_table = {"With love:-)": 3, "OK, accepted": 1, "Rather not": -1,
+                         "I hate it:-(": -5}
+        scoring_clear = scoring_table[oper_args[2]]
+        scoring_clouds = scoring_table[oper_args[3]]
+        scoring_overcast = scoring_table[oper_args[4]]
+        scoring_rain = scoring_table[oper_args[5]]
+        scoring_snow = scoring_table[oper_args[6]]
+        if db_description == "Clear":
+            descr_score = scoring_clear
+        if db_description == "Clouds":
+            descr_score = scoring_clouds
+        if db_description == "Overcast":
+            descr_score = scoring_overcast
+        if db_description == "Rain":
+            descr_score = scoring_rain
+        if db_description == "Snow":
+            descr_score = scoring_snow
+        # print(descr_score)
+        daily_score = temp_score + descr_score
+        # print(db_city, daily_score)
+        if db_city not in locations_scoring:
+            locations_scoring[db_city] = daily_score
+        else:
+            locations_scoring[db_city] += daily_score
+        show_date = str(datetime.date.fromtimestamp(db_date))
+        # show_date = datetime.datetime.strptime(show_date, "%Y-%m-%d")
+        daily_keys = (show_date, db_description, db_temp)
+        if db_city not in locations_forecasts:
+            first_set = [daily_keys]
+            locations_forecasts[db_city] = first_set
+        else:
+            locations_forecasts[db_city].append(daily_keys)
+        continue
+    print(locations_scoring)
+    print(locations_forecasts)
 

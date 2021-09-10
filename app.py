@@ -74,7 +74,7 @@ def update_forecasts():
             frc_temp = element['temp']['day']
             daily_frc = [frc_impdate, frc_city, frc_date, frc_description, frc_temp]
             oper_args = daily_frc
-            mng.callbacks['db_put'](oper_args)
+            mng.callbacks['db_put'](oper_args)      #dopisać funkcję kasującą .json
             continue
         time.sleep(7)
         continue
