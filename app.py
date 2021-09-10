@@ -81,10 +81,10 @@ def update_forecasts():
 
 # update_forecasts()
 
-def get_params():
+def get_params():           #będzie pobranie z formularza, na razie na sztywno
     procedure = 'find_it'
-    date_from = '2021-09-05'
-    date_to = '2021-09-12'
+    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
+    date_to = datetime.datetime.strptime('2021-09-08', "%Y-%m-%d")
     Clear = "With love:-)"
     Clouds = "OK, accepted"
     Overcast = "Rather not"
@@ -92,45 +92,8 @@ def get_params():
     Snow = "Rather not"
     temp_floor = 18.0
     temp_cap = 25.0
-    clb_args = [date_from, date_to, Clear, Clouds, Overcast, Rain, Snow, temp_floor,
+    oper_args = [date_from, date_to, Clear, Clouds, Overcast, Rain, Snow, temp_floor,
                 temp_cap]
-    mng.callbacks[procedure](clb_args)
+    mng.callbacks[procedure](oper_args)
 
-    # print(ask_for)
-    # return ask_for
-
-# get_params()
-# def odpal():
-#     def scoring(ask_for):
-#         # date_from = '2021-09-05'
-#         # date_to = '2021-09-12'
-#         # Clear = "With love:-)"
-#         # Clouds = "OK, accepted"
-#         # Overcast = "Rather not"
-#         # Rain = "I hate it:-("
-#         # Snow = "Rather not"
-#         # temp_floor = 18.0
-#         # temp_cap = 25.0
-#         # question = [date_from, date_to, Clear, Clouds, Overcast, Rain, Snow, temp_floor,
-#         #             temp_cap]
-#         if db.Forecasts.temp >= ask_for[7] and db.Forecast.temp <= ask_for[8]:
-#             temp_score = 1
-#         elif db.Forecasts.temp > (ask_for[8] + 8) or db.Forecasts.temp < (ask_for[7] - 8):
-#             temp_score = -1
-#         else:
-#             temp_score = 0
-#         scoring_table = {"With love:-)": 3, "OK, accepted": 1, "Rather not": -1,
-#                          "I hate it:-(": -5}
-#         scoring_clear = scoring_table[ask_for[2]]
-#         print(scoring_clear)
-#         scoring_clouds = scoring_table[ask_for[3]]
-#         print(scoring_clouds)
-#         scoring_overcast = scoring_table[ask_for[4]]
-#         print(scoring_overcast)
-#         scoring_rain = scoring_table[ask_for[5]]
-#         print(scoring_rain)
-#         scoring_snow = scoring_table[ask_for[6]]
-#         print(scoring_snow)
-#     scoring(ask_for)
-#
-# odpal()
+get_params()
