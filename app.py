@@ -83,7 +83,7 @@ def update_forecasts():
 
 def get_params():           #będzie pobranie z formularza, na razie na sztywno
     procedure = 'find_it'
-    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
+    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
     date_to = datetime.datetime.strptime('2021-09-08', "%Y-%m-%d")
     Clear = "With love:-)"
     Clouds = "OK, accepted"

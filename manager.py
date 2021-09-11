@@ -71,7 +71,8 @@ def db_put(oper_args):
 @mng.set("find_it")
 def db_get(oper_args):
     date_start = int(time.mktime(oper_args[0].timetuple()))
-    date_end = int(time.mktime(oper_args[1].timetuple()))
+    date_end = (oper_args[1]) + datetime.timedelta(hours=23)
+    date_end = int(time.mktime(date_end.timetuple()))
     print(date_start)
     print(date_end)
     # date_start = 1631224800 - (2 * 24 * 60 * 60)    # 2021-09-08
