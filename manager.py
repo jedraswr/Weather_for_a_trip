@@ -17,11 +17,29 @@ db = SQLAlchemy(app)
 locations_scoring = {}
 locations_forecasts = {}
 
+locations = {'amsterdam,nl': 'amsterdam',  'athens,gr': 'athens'}#,
+#              'berlin,de': 'berlin', 'berne,ch': 'berne', 'bratislava,sk': 'bratislava',
+#              'brussels,be': 'brussels', 'bucharest,ro': 'bucharest',
+#              'budapest,hu': 'budapest', 'copenhagen,dk': 'copenhagen',
+#              'dublin,ie': 'dublin', 'helsinki,fi': 'helsinki', 'lisbon,pt': 'lisbon',
+#              'london,gb': 'london', 'madrid,es': 'madrid', 'moscow,ru': 'moscow',
+#              'oslo,no': 'oslo', 'paris,fr': 'paris', 'podgorica,me': 'podgorica',
+#              'prague,cz': 'prague', 'reykjavik,is': 'reykjavik', 'riga,lv': 'riga',
+#              'rome,it': 'rome', 'sofia,bg': 'sofia', 'stockholm,se': 'stockholm',
+#              'tallinn,ee': 'tallinn', 'valletta,mt': 'valletta', 'vienna,at': 'vienna',
+#              'vilnius,lt': 'vilnius', 'warsaw,pl': 'warsaw', 'zagreb,hr': 'zagreb',
+# }
+peferences = []
+
+# Management:
+
 class Manager:
     def __init__(self):
         self.callbacks = {}
         self.get_forecasts = []      # dla wyszukanych prognoz
         self.params = []            # dla parametrów wyszukiwania z formularza
+        self.locations = {}
+        self.preferences = []
 
     def set(self, procedure):
         def decorate(callback):
@@ -37,6 +55,8 @@ class Manager:
 
 mng = Manager()
 
+mng.locations = locations
+
 class Forecasts(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
     impdate = db.Column(db.Date, nullable=False, unique=False)
@@ -50,10 +70,6 @@ class Updates(db.Model):
     date = db.Column(db.Date, nullable=False, unique=False)
 
 db.create_all()
-# db.session.query(Forecasts).delete()
-# db.session.query(Updates).delete()
-# db.session.query(Forecasts).filter(Forecasts.pk>17).delete()
-
 
 @mng.set("db_put")
 def db_put(oper_args):
@@ -130,8 +146,8 @@ def db_get(oper_args):
         else:
             locations_forecasts[db_city].append(daily_keys)
         continue
-    print(locations_scoring)
-    print(locations_forecasts)
+    # print(locations_scoring)
+    # print(locations_forecasts)
     sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
     print(sorted_scoring)
 
