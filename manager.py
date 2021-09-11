@@ -131,4 +131,6 @@ def db_get(oper_args):
         continue
     print(locations_scoring)
     print(locations_forecasts)
+    sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
+    print(sorted_scoring)
 
