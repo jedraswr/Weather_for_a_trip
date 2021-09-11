@@ -6,6 +6,8 @@ import requests as requests
 import datetime
 import time
 from manager import mng
+from manager import Forecasts
+from manager import Updates
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -20,22 +22,27 @@ ask_for = []
 
 
 # Raw data import:
-capitals = [('amsterdam', 'amsterdam,nl'), ('athens', 'athens,gr'),
-            ('berlin', 'berlin,de'), ('berne', 'berne,ch'),
-            ('bratislava', 'bratislava,sk'), ('brussels', 'brussels,be'),
-            ('bucharest', 'bucharest,ro'), ('budapest', 'budapest,hu'),
-            ('copenhagen', 'copenhagen,dk'), ('dublin', 'dublin,ie'),
-            ('helsinki', 'helsinki,fi'), ('lisbon', 'lisbon,pt'),
-            ('london', 'london,gb'), ('madrid', 'madrid,es'),
-            ('moscow', 'moscow,ru'), ('oslo', 'oslo,no'), ('paris', 'paris,fr'),
-            ('podgorica', 'podgorica,me'), ('prague', 'prague,cz'),
-            ('reykjavik', 'reykjavik,is'), ('riga', 'riga,lv'), ('rome', 'rome,it'),
-            ('sofia', 'sofia,bg'), ('stockholm', 'stockholm,se'),
-            ('tallinn', 'tallinn,ee'), ('valletta', 'valletta,mt'),
-            ('vienna', 'vienna,at'), ('vilnius', 'vilnius,lt'),
-            ('warsaw', 'warsaw,pl'), ('zagreb', 'zagreb,hr')
-]
-ra_key_file = open('rapidapikey.txt', 'r', encoding='utf-8')
+capitals = [('amsterdam', 'amsterdam,nl')]#, ('athens', 'athens,gr'),
+#             ('berlin', 'berlin,de'), ('berne', 'berne,ch'),
+#             ('bratislava', 'bratislava,sk'), ('brussels', 'brussels,be'),
+#             ('bucharest', 'bucharest,ro'), ('budapest', 'budapest,hu'),
+#             ('copenhagen', 'copenhagen,dk'), ('dublin', 'dublin,ie'),
+#             ('helsinki', 'helsinki,fi'), ('lisbon', 'lisbon,pt'),
+#             ('london', 'london,gb'), ('madrid', 'madrid,es'),
+#             ('moscow', 'moscow,ru'), ('oslo', 'oslo,no'), ('paris', 'paris,fr'),
+#             ('podgorica', 'podgorica,me'), ('prague', 'prague,cz'),
+#             ('reykjavik', 'reykjavik,is'), ('riga', 'riga,lv'), ('rome', 'rome,it'),
+#             ('sofia', 'sofia,bg'), ('stockholm', 'stockholm,se'),
+#             ('tallinn', 'tallinn,ee'), ('valletta', 'valletta,mt'),
+#             ('vienna', 'vienna,at'), ('vilnius', 'vilnius,lt'),
+#             ('warsaw', 'warsaw,pl'), ('zagreb', 'zagreb,hr')
+# ]
+
+try:
+    ra_key_file = open('rapidapikey.txt', 'r', encoding='utf-8')
+except FileNotFoundError:
+    print("Couldn't find file destined for RapidAPI key!.")
+    exit()
 ra_key = str(ra_key_file.read())
 ra_key_file.close()
 today = datetime.date.today()
@@ -50,7 +57,7 @@ def update_forecasts():
             'x-rapidapi-key': ra_key
         }
         response = requests.request("GET", url, headers=headers, params=querystring)
-        filename = "forecasts/" + city + ".json"    # writing joint raw forecast
+        filename = city + ".json"    # writing joint raw forecast
         with open(filename, "w", encoding="utf-8") as file:
             json.dump(response.json(), file)
         forecast_j = open(filename, "r", encoding="utf-8")
@@ -74,14 +81,19 @@ def update_forecasts():
             frc_temp = element['temp']['day']
             daily_frc = [frc_impdate, frc_city, frc_date, frc_description, frc_temp]
             oper_args = daily_frc
-            mng.callbacks['db_put'](oper_args)      #dopisać funkcję kasującą .json
+            mng.callbacks['db_put'](oper_args)
             continue
+        os.remove(filename)
+        last_update = db.session.query(Updates).filter(Updates.date).first()
+        db.session.query(Forecasts).filter(Forecasts.city == city).\
+            filter(Forecasts.impdate != last_update).delete()
         time.sleep(7)
         continue
 
-# update_forecasts()
+if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
+    update_forecasts()
 
-def get_params():           #będzie pobranie z formularza, na razie na sztywno
+def get_params():           # będzie pobranie z formularza, na razie na sztywno
     procedure = 'find_it'
     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
     date_to = datetime.datetime.strptime('2021-09-08', "%Y-%m-%d")
