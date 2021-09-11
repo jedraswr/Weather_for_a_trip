@@ -51,7 +51,7 @@ def update_forecasts():
             for element in forecast_extract:        # daily forecast
                 frc_impdate = today
                 frc_city = location
-                frc_date = element['dt'] ### - 691200
+                frc_date = element['dt']
                 frc_content1 = element['weather'][0]['main']
                 frc_content2 = element['weather'][0]['description']
                 if frc_content1 == 'Clouds':
@@ -72,9 +72,9 @@ def update_forecasts():
     procedure = "db_clean"
     oper_args = []
     mng.callbacks[procedure](oper_args)
-    # last_update = db.session.query(Updates).filter(Updates.date).first()
-    # clean = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
-    # db.session.add(clean)
+    # last_update = db.session.query(Updates).filter(Updates.date).first()  # przełączone do manager
+    # erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
+    # db.session.add(erase)
     # db.session.commit()
 
 
@@ -96,7 +96,7 @@ def get_params():           # będzie pobranie z formularza, na razie jest na sz
                 temp_cap]
     mng.callbacks[procedure](oper_args)
 
-get_params()
+get_params()        # będzie wywoływana z formularza
 
 def put_scores():      # będzie zwracała wyniki do formularza
     pass

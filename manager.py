@@ -57,6 +57,8 @@ mng = Manager()
 mng.locations = locations
 mng.preferences = preferences
 
+# Data base:
+
 class Forecasts(db.Model):
     pk = db.Column(db.Integer, primary_key=True)
     impdate = db.Column(db.Date, nullable=False, unique=False)
@@ -70,6 +72,8 @@ class Updates(db.Model):
     date = db.Column(db.Date, nullable=False, unique=False)
 
 db.create_all()
+
+# Executives:
 
 @mng.set("db_put")          # entry to data base
 def db_put(oper_args):
@@ -87,8 +91,8 @@ def db_put(oper_args):
 @mng.set("db_clean")        # deleting out-of-date forecasts
 def db_clear(oper_args):
     last_update = db.session.query(Updates).filter(Updates.date).first()
-    clean = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
-    db.session.add(clean)
+    erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
+    db.session.add(erase)
     db.session.commit()
 
 @mng.set("find_it")         # searching and scoring
@@ -112,7 +116,7 @@ def find_it(oper_args):
             temp_score = -2   # scoring for unwanted temp.
         else:
             temp_score = 0      # scoring for irrelevant temp.
-        scoring_clear = mng.preferences[oper_args[2]]
+        scoring_clear = mng.preferences[oper_args[2]]  # scorings for different weathers
         scoring_clouds = mng.preferences[oper_args[3]]
         scoring_overcast = mng.preferences[oper_args[4]]
         scoring_rain = mng.preferences[oper_args[5]]
@@ -128,13 +132,13 @@ def find_it(oper_args):
         if db_description == "Snow":
             descr_score = scoring_snow
         daily_score = temp_score + descr_score
-        if db_city not in locations_scoring:
+        if db_city not in locations_scoring:    # starting counting scoring for location
             locations_scoring[db_city] = daily_score
         else:
             locations_scoring[db_city] += daily_score
         show_date = str(datetime.date.fromtimestamp(db_date))
         daily_keys = (show_date, db_description, db_temp)
-        if db_city not in locations_forecasts:
+        if db_city not in locations_forecasts:  # collecting forecasts elements for locations
             first_set = [daily_keys]
             locations_forecasts[db_city] = first_set
         else:
