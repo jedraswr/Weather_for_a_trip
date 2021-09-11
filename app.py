@@ -84,9 +84,9 @@ def update_forecasts():
             mng.callbacks['db_put'](oper_args)
             continue
         os.remove(filename)
-        last_update = db.session.query(Updates).filter(Updates.date).first()
-        db.session.query(Forecasts).filter(Forecasts.city == city).\
-            filter(Forecasts.impdate != last_update).delete()
+        # last_update = db.session.query(Updates).filter(Updates.date).first()
+        # db.session.query(Forecasts).filter(Forecasts.city == city).\
+        #     filter(Forecasts.impdate != last_update).delete()
         time.sleep(7)
         continue
 
