@@ -69,8 +69,14 @@ def update_forecasts():
         os.remove(filename)
         time.sleep(7)               # API requirement: max 10 updates/min
         continue
+    procedure = "db_clean"
+    oper_args = []
+    mng.callbacks[procedure](oper_args)
     # last_update = db.session.query(Updates).filter(Updates.date).first()
-    # db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
+    # clean = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
+    # db.session.add(clean)
+    # db.session.commit()
+
 
 if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
     update_forecasts()
