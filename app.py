@@ -54,6 +54,8 @@ def update_forecasts():
                 frc_date = element['dt']
                 frc_content1 = element['weather'][0]['main']
                 frc_content2 = element['weather'][0]['description']
+                if frc_content1 == "Clear":
+                    frc_description = "Sunnily"
                 if frc_content1 == 'Clouds':
                     if frc_content2 == "few clouds" or frc_content2 == "scattered clouds":
                         frc_description = 'Clouds'
@@ -69,9 +71,9 @@ def update_forecasts():
         os.remove(filename)
         time.sleep(7)               # API requirement: max 10 updates/min
         continue
-    procedure = "db_clean"
-    oper_args = []
-    mng.callbacks[procedure](oper_args)
+    # procedure = "db_clean"
+    # oper_args = []
+    # mng.callbacks[procedure](oper_args)
     # last_update = db.session.query(Updates).filter(Updates.date).first()  # przełączone do manager
     # erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
     # db.session.add(erase)

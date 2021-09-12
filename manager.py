@@ -16,20 +16,25 @@ db = SQLAlchemy(app)
 
 locations_scoring = {}
 locations_forecasts = {}
-locations = {'amsterdam,nl': 'amsterdam'}#,  'athens,gr': 'athens',     # na razie ograniczona lista
-#              'berlin,de': 'berlin', 'berne,ch': 'berne', 'bratislava,sk': 'bratislava',
-#              'brussels,be': 'brussels', 'bucharest,ro': 'bucharest',
-#              'budapest,hu': 'budapest', 'copenhagen,dk': 'copenhagen',
-#              'dublin,ie': 'dublin', 'helsinki,fi': 'helsinki', 'lisbon,pt': 'lisbon',
-#              'london,gb': 'london', 'madrid,es': 'madrid', 'moscow,ru': 'moscow',
-#              'oslo,no': 'oslo', 'paris,fr': 'paris', 'podgorica,me': 'podgorica',
-#              'prague,cz': 'prague', 'reykjavik,is': 'reykjavik', 'riga,lv': 'riga',
-#              'rome,it': 'rome', 'sofia,bg': 'sofia', 'stockholm,se': 'stockholm',
-#              'tallinn,ee': 'tallinn', 'valletta,mt': 'valletta', 'vienna,at': 'vienna',
-#              'vilnius,lt': 'vilnius', 'warsaw,pl': 'warsaw', 'zagreb,hr': 'zagreb',
-# }
+locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',     # na razie ograniczona lista
+             'berlin,de': 'Berlin', 'berne,ch': 'Berne', 'bratislava,sk': 'Bratislava',
+             'brussels,be': 'Brussels', 'bucharest,ro': 'Bucharest',
+             'budapest,hu': 'Budapest', 'copenhagen,dk': 'Copenhagen',
+             'dublin,ie': 'Dublin', 'helsinki,fi': 'Helsinki', 'lisbon,pt': 'Lisbon',
+             'london,gb': 'London', 'madrid,es': 'Madrid', 'moscow,ru': 'Moscow',
+             'oslo,no': 'Oslo', 'paris,fr': 'Paris', 'podgorica,me': 'Podgorica',
+             'prague,cz': 'Prague', 'reykjavik,is': 'Reykjavik', 'riga,lv': 'Riga',
+             'rome,it': 'Rome', 'sofia,bg': 'Sofia', 'stockholm,se': 'Stockholm',
+             'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
+             'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
+}
 preferences = {"With love:-)": 3, "OK, accepted": 1, "Rather not": -1,
                          "I hate it:-(": -5}
+
+first = []
+second = []
+third = []
+
 
 # Management:
 
@@ -39,6 +44,11 @@ class Manager:
         self.get_forecasts = []      # dla wyszukanych prognoz
         self.locations = {}
         self.preferences = {}
+        self.chosen_frc = []
+        self.first = []
+        self.second = []
+        self.third = []
+        self.winners = []
 
     def set(self, procedure):
         def decorate(callback):
@@ -95,6 +105,35 @@ def db_clear(oper_args):
     db.session.add(erase)
     db.session.commit()
 
+def decorate_data():
+    nrf = 1
+    for element in mng.chosen_frc:
+        for component in element:
+            comp_dt = component[0]
+            comp_sky = component[1]
+            comp_tmp = str(component[2]) + " C"
+            daily_frc = (comp_dt, comp_sky, comp_tmp)
+            if nrf == 1:
+                first.append(daily_frc)
+            elif nrf == 2:
+                second.append(daily_frc)
+            else:
+                third.append(daily_frc)
+            continue
+        if nrf == 1:
+            mng.first = first
+        elif nrf == 2:
+            mng.second = second
+        else:
+            mng.third = third
+        nrf += 1
+        continue
+    print(mng.first)
+    print(mng.second)
+    print(mng.third)
+
+
+
 @mng.set("find_it")         # searching and scoring
 def find_it(oper_args):
     date_start = int(time.mktime(oper_args[0].timetuple()))
@@ -143,7 +182,31 @@ def find_it(oper_args):
             locations_forecasts[db_city] = first_set
         else:
             locations_forecasts[db_city].append(daily_keys)
+        # print(locations_forecasts)
         continue
     sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
-    print(sorted_scoring)
+    # print(sorted_scoring)
+    city1 = sorted_scoring[0][0]
+    forecast1 = locations_forecasts[city1]
+    mng.chosen_frc.append(forecast1)
+    city2 = sorted_scoring[1][0]
+    forecast2 = locations_forecasts[city2]
+    mng.chosen_frc.append(forecast2)
+    city3 = sorted_scoring[2][0]
+    forecast3 = locations_forecasts[city3]
+    mng.chosen_frc.append(forecast3)
+    decorate_data()
+    mng.winners.append(mng.locations[city1])
+    mng.winners.append(mng.locations[city2])
+    mng.winners.append(mng.locations[city3])
+
+    # mng.winners.append(mng.locations[city2])
+    # mng.winners.append(mng.locations[city3])
+    print(mng.winners)
+
+
+    # print(forecast1)
+    forecast1_len = len(forecast1)
+    # print(forecast1_len)
+
 
