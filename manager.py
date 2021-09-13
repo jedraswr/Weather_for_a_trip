@@ -16,7 +16,7 @@ db = SQLAlchemy(app)
 
 locations_scoring = {}
 locations_forecasts = {}
-locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',     # na razie ograniczona lista
+locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'berlin,de': 'Berlin', 'berne,ch': 'Berne', 'bratislava,sk': 'Bratislava',
              'brussels,be': 'Brussels', 'bucharest,ro': 'Bucharest',
              'budapest,hu': 'Budapest', 'copenhagen,dk': 'Copenhagen',
@@ -28,13 +28,15 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',     # na razie
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"With love:-)": 3, "OK, accepted": 1, "Rather not": -1,
-                         "I hate it:-(": -5}
+preferences = {"With love:-)": 5, "OK, accepted": 1, "Rather not": -1,
+                         "I hate it:-(": -3}     #scoring for weather types
 
 first = []
 second = []
 third = []
-
+col_dt = []
+col_sky = []
+col_temp = []
 
 # Management:
 
@@ -99,18 +101,22 @@ def db_put(oper_args):
     db.session.commit()
 
 @mng.set("db_clean")        # deleting out-of-date forecasts
-def db_clear(oper_args):
-    last_update = db.session.query(Updates).filter(Updates.date).first()
+def db_clean(oper_args):
+    find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
+    last_update = find_row.date     # powinien zwrócić datę z find_row
     erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
     db.session.add(erase)
     db.session.commit()
 
-def decorate_data():
+def format_data():   ### wersja na 3 kolumny
     nrf = 1
     for element in mng.chosen_frc:
         for component in element:
             comp_dt = component[0]
-            comp_sky = component[1]
+            if len(component[1]) < 9:
+                comp_sky = str(component[1] + ((9 - len(component[1])) * " "))
+            comp_sky = str(component[1])
+            # print(comp_sky)
             comp_tmp = str(component[2]) + " C"
             daily_frc = (comp_dt, comp_sky, comp_tmp)
             if nrf == 1:
@@ -132,6 +138,37 @@ def decorate_data():
     print(mng.second)
     print(mng.third)
 
+# def format_data(): ### wersja na 9 kolumn - do poprawienia
+#     nrf = 1
+#     for element in mng.chosen_frc:
+#         for component in element:
+#             col_dt.append(component[0])
+#             col_sky.append(component[1])
+#             col_temp.append(str(component[2]) + " C")
+#             continue
+#         # print(col_dt)
+#         # print(col_sky)
+#         # print(col_temp)
+#         if nrf == 1:
+#             mng.first.append(col_dt)
+#             mng.first.append(col_sky)
+#             mng.first.append(col_temp)
+#             # print(mng.first)
+#         elif nrf == 2:
+#             mng.second.append(col_dt)
+#             mng.second.append(col_sky)
+#             mng.second.append(col_temp)
+#             # print(mng.second)
+#         else:
+#             mng.third.append(col_dt)
+#             mng.third.append(col_sky)
+#             mng.third.append(col_temp)
+#             # print(mng.third)
+#         nrf += 1
+#         print(mng.first)
+#         print(mng.second)
+#         print(mng.third)
+#         continue
 
 
 @mng.set("find_it")         # searching and scoring
@@ -150,18 +187,19 @@ def find_it(oper_args):
         db_temp = db_query[nr_forec].temp
         nr_forec += 1
         if db_temp >= oper_args[7] and db_temp <= oper_args[8]:
-            temp_score = 2    # scoring for preferred temp.
+            temp_score = 2          # scoring for preferred temp.
         elif db_temp > (oper_args[8] + 8) or db_temp < (oper_args[7] - 8):
-            temp_score = -2   # scoring for unwanted temp.
+            temp_score = -2         # scoring for unwanted temp.
         else:
             temp_score = 0      # scoring for irrelevant temp.
-        scoring_clear = mng.preferences[oper_args[2]]  # scorings for different weathers
+        scoring_sunnily = mng.preferences[oper_args[2]]  # scorings for different weathers
         scoring_clouds = mng.preferences[oper_args[3]]
         scoring_overcast = mng.preferences[oper_args[4]]
         scoring_rain = mng.preferences[oper_args[5]]
         scoring_snow = mng.preferences[oper_args[6]]
-        if db_description == "Clear":
-            descr_score = scoring_clear
+        # print(mng.preferences)
+        if db_description == "Sunnily":
+            descr_score = scoring_sunnily
         if db_description == "Clouds":
             descr_score = scoring_clouds
         if db_description == "Overcast":
@@ -187,26 +225,16 @@ def find_it(oper_args):
     sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
     # print(sorted_scoring)
     city1 = sorted_scoring[0][0]
-    forecast1 = locations_forecasts[city1]
-    mng.chosen_frc.append(forecast1)
     city2 = sorted_scoring[1][0]
-    forecast2 = locations_forecasts[city2]
-    mng.chosen_frc.append(forecast2)
     city3 = sorted_scoring[2][0]
+    forecast1 = locations_forecasts[city1]
+    forecast2 = locations_forecasts[city2]
     forecast3 = locations_forecasts[city3]
+    mng.chosen_frc.append(forecast1)
+    mng.chosen_frc.append(forecast2)
     mng.chosen_frc.append(forecast3)
-    decorate_data()
     mng.winners.append(mng.locations[city1])
     mng.winners.append(mng.locations[city2])
     mng.winners.append(mng.locations[city3])
-
-    # mng.winners.append(mng.locations[city2])
-    # mng.winners.append(mng.locations[city3])
     print(mng.winners)
-
-
-    # print(forecast1)
-    forecast1_len = len(forecast1)
-    # print(forecast1_len)
-
-
+    format_data()
