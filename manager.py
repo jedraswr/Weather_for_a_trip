@@ -28,8 +28,7 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"With love:-)": 5, "OK, accepted": 1, "Rather not": -1,
-                         "I hate it:-(": -3}     #scoring for weather types
+preferences = {"a": 5, "b": 1, "c": -1, "d": -3}     #scoring for weather types
 
 first = []
 second = []

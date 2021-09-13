@@ -20,25 +20,25 @@
                 <img src="images/pexels-tino-schmidt-898578.jpg" width="160" height="130">
             </gallery>
         </div>
-        <h6 style="Italic", color="Brown"> All pictures and icons courtesy of Pexels and amChart.</h6>
+        <h6 style="Italic", color="Brown"> All pictures and icons due to courtesy of Pexels and amChart.</h6>
     </div>
     <div class="column col-9">
         <h2> Hi! <br>
             A couple of days off your work? Another weekend with no plans? Your boss sent you on a surprise vacation?
-            So grab your travel bag, and visit some places abroad. I will find for you some places with the nice
+            So grab your travel bag, and visit some places abroad. I will find for you some cities with the nice
             weather, just let me know something about your preferences:
         </h2>
-        <form>
+        <form method="POST">
             <div class="form-group">
-                <label class="form-label">First of all let me know the dates, starting and ending your happy time:</label>
-                <input class="form-input" type="date" value="" placeholder="from YYYY-MM-DD" name="date_from">
-                <input class="form-input" type="date" value="" placeholder="to YYYY-MM-DD" name="date_to">
+                <label class="form-label">First of all let me know the dates, starting and ending your happy time: *</label>
+                <input class="form-input" type="date" value="" placeholder="from YYYY-MM-DD" name="date_from" width="200">
+                <input class="form-input" type="date" value="" placeholder="to YYYY-MM-DD" name="date_to" width="200">
             </div>
                 <div class="container">
                     <div class="form-group">
                         <label class="form-label">Now let me know about the weather you like or not:</label>
-                        <label for="Sunnily"></label>
-                        <select id="Sunnily">
+                        <label for="sunnily"></label>
+                        <select id="sunnily">
                             <option id="1a">With love:-)</option>
                             <option id="1b">OK, accepted</option>
                             <option id="1c">Rather not</option>
@@ -46,8 +46,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Clouds"></label>
-                        <select id="Clouds">
+                        <label for="clouds"></label>
+                        <select id="clouds">
                             <option id="2a">With love:-)</option>
                             <option id="2b">OK, accepted</option>
                             <option id="2c">Rather not</option>
@@ -55,8 +55,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Overcoast"></label>
-                        <select id="Overcoast">
+                        <label for="overcoast"></label>
+                        <select id="overcoast">
                             <option id="3a">With love:-)</option>
                             <option id="3b">OK, accepted</option>
                             <option id="3c">Rather not</option>
@@ -64,8 +64,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Rain"></label>
-                        <select id="Rain">
+                        <label for="rain"></label>
+                        <select id="rain">
                             <option id="4a">With love:-)</option>
                             <option id="4b">OK, accepted</option>
                             <option id="4c">Rather not</option>
@@ -73,7 +73,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <select id="Snow">
+                        <label for="snow"></label>
+                        <select id="snow">
                             <option id="5a">With love:-)</option>
                             <option id="5b">OK, accepted</option>
                             <option id="5c">Rather not</option>
@@ -92,8 +93,9 @@
             <div class="form-group">
                     <button type="submit" class="btn btn-primary">So let's check it!</button>
             </div>
-
         </form>
+        <h6>* Due to fact, that updating the forecasts needs RapidAPI keys, for a trial use please check the date between
+        Sept 01 - Sept 15, 2021.</h6>
     </div>
     <div>
     </div>

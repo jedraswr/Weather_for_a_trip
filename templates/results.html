@@ -8,6 +8,68 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
 <body>
+    <div>
+        <h1> So wellcome to the the list of best options for your trip:-)</h1>
+    </div>
+    <div class="columns">
+        <div class="column col-3">
+
+            <div container>
+                <h3>The winner is:</h3>
+                {{first_place}}
+                <h5> OBRAZEK </h5>
+                <h4>with it's weather forecast:</h4>
+                <div class="hero bg-grey">
+                    <div class="hero-sm">
+                        <div align="center" style="background: gold">
+                            {% for tuple in first_forecast %}
+                            {{tuple}} <br />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column col-6">
+            <div container>
+                <h3>The second valid place is:</h3>
+                <h5> OBRAZEK </h5>
+                {{second_place}}
+                <h4>with it's weather forecast:</h4>
+                <div class="hero bg-grey">
+                    <div class="hero-sm">
+                        <div align="center" style="background: silver">
+                            {% for tuple in first_forecast %}
+                            {{tuple}} <br />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <ul style="margin: 30px">
+                    <li style="color: red; margin: 20px"><a href="/">Not satisfied...? Let's have another chance:-)</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="column col-9">
+            <div container>
+                <h3>The third nice place is:</h3>
+                <h5> OBRAZEK </h5>
+                {{third_place}}
+                <h4>with it's weather forecast:</h4>
+                <div class="hero bg-grey">
+                    <div class="hero-sm">
+                        <div align="center" style="background: bronze">
+                            {% for tuple in first_forecast %}
+                            {{tuple}} <br />
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

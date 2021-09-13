@@ -6,8 +6,6 @@ import requests as requests
 import datetime
 import time
 from manager import mng
-from manager import Forecasts
-from manager import Updates
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -78,21 +76,46 @@ def update_forecasts():
 if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
     update_forecasts()
 
-@app.route("/")
-def get_params():           # będzie pobranie z formularza, na razie jest na sztywno
+@app.route("/", methods=["POST", "GET"])
+def get_params():
+    response = dict(request.form)
+    date_from = response["date_from"]
+    date_to = response["date_to"]
+    sunnily = response["sunnily"]
+    clouds = response["clouds"]
+    overcast = response["overcast"]
+    rain = response["rain"]
+    snow = response["snow"]
+    temp_floor = response["temp_floor"]
+    temp_cap = response["temp_cap"]
     return render_template("index.html")
-#     pass
+    print(date_from, date_to)
+    print(sunnily, clouds, overcast, rain, snow)
+    print(temp_floor, temp_cap)
+    procedure = 'find_it'
+    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
+    date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
+    sunnily = sunnily[1]
+    clouds = clouds[1]
+    overcast = overcast[1]
+    rain = rain[1]
+    snow = snow[1]
+    oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
+                 temp_cap]
+    mng.callbacks[procedure](oper_args)
+
+# def get_params():
 #     procedure = 'find_it'
-#     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
+#     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
 #     date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
-#     Sunnily = "With love:-)"
-#     Clouds = "OK, accepted"
-#     Overcast = "Rather not"
-#     Rain = "I hate it:-("
-#     Snow = "Rather not"
+#     sunnily = "a"   # "With love:-)"
+#     clouds = "b"    # "OK, accepted"
+#     overcast = "c"  # "Rather not"
+#     rain = "d"      # "I hate it:-("
+#     snow = "c"      # "Rather not"
 #     temp_floor = 18.0
 #     temp_cap = 25.0
-#     oper_args = [date_from, date_to, Sunnily, Clouds, Overcast, Rain, Snow, temp_floor,
+#     oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
 #                 temp_cap]
 #     mng.callbacks[procedure](oper_args)
 #
@@ -100,5 +123,7 @@ def get_params():           # będzie pobranie z formularza, na razie jest na sz
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():      # będzie zwracała wyniki do formularza
-    return render_template("index.html")
+    return render_template("results.html", first_place=mng.winners[0], second_place=mng.winners[1],
+                           third_place=mng.winners[2], first_forecast=mng.first,
+                           second_forecast=mng.second, third_forecast=mng.third)
 #     pass
