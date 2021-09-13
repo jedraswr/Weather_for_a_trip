@@ -91,12 +91,9 @@ def get_params():
         snow = response["snow"]
         temp_floor = response["temp_floor"]
         temp_cap = response["temp_cap"]
-        print(date_from, date_to)
-        print(sunnily, clouds, overcast, rain, snow)
-        print(temp_floor, temp_cap)
         procedure = 'find_it'
-        date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
-        date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
+        date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
+        date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
         oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
                      temp_cap]
         mng.callbacks[procedure](oper_args)
