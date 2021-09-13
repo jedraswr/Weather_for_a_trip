@@ -13,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///weatherforatrip.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///manager.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -76,6 +76,7 @@ def update_forecasts():
 if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
     update_forecasts()
 
+@app.route("/", methods=["POST", "GET"])
 def get_params():           # będzie pobranie z formularza, na razie jest na sztywno
     procedure = 'find_it'
     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
@@ -93,5 +94,6 @@ def get_params():           # będzie pobranie z formularza, na razie jest na sz
 
 get_params()        # będzie wywoływana z formularza
 
+@app.route("/results/", methods=["POST", "GET"])
 def put_scores():      # będzie zwracała wyniki do formularza
     pass
