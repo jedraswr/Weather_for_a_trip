@@ -76,35 +76,33 @@ def update_forecasts():
 if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
     update_forecasts()
 
+
+
 @app.route("/", methods=["POST", "GET"])
 def get_params():
-    response = dict(request.form)
-    date_from = response["date_from"]
-    date_to = response["date_to"]
-    sunnily = response["sunnily"]
-    clouds = response["clouds"]
-    overcast = response["overcast"]
-    rain = response["rain"]
-    snow = response["snow"]
-    temp_floor = response["temp_floor"]
-    temp_cap = response["temp_cap"]
+    if request.method == "POST":
+        response = dict(request.form)
+        date_from = response["date_from"]
+        date_to = response["date_to"]
+        sunnily = response["sunnily"]
+        clouds = response["clouds"]
+        overcast = response["overcast"]
+        rain = response["rain"]
+        snow = response["snow"]
+        temp_floor = response["temp_floor"]
+        temp_cap = response["temp_cap"]
+        print(date_from, date_to)
+        print(sunnily, clouds, overcast, rain, snow)
+        print(temp_floor, temp_cap)
+        procedure = 'find_it'
+        date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
+        date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
+        oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
+                     temp_cap]
+        mng.callbacks[procedure](oper_args)
     return render_template("index.html")
-    print(date_from, date_to)
-    print(sunnily, clouds, overcast, rain, snow)
-    print(temp_floor, temp_cap)
-    procedure = 'find_it'
-    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
-    date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
-    sunnily = sunnily[1]
-    clouds = clouds[1]
-    overcast = overcast[1]
-    rain = rain[1]
-    snow = snow[1]
-    oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
-                 temp_cap]
-    mng.callbacks[procedure](oper_args)
 
-# def get_params():
+# def get_params():   ### DO WRZUCANIA NA SZTYWNO
 #     procedure = 'find_it'
 #     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
 #     date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
@@ -122,8 +120,9 @@ def get_params():
 # get_params()        # będzie wywoływana z formularza
 
 @app.route("/results/", methods=["POST", "GET"])
-def put_scores():      # będzie zwracała wyniki do formularza
-    return render_template("results.html", first_place=mng.winners[0], second_place=mng.winners[1],
-                           third_place=mng.winners[2], first_forecast=mng.first,
-                           second_forecast=mng.second, third_forecast=mng.third)
+def put_scores():                       # będzie zwracała wyniki do formularza
+    return render_template("results.html", first_place=mng.winners[0],
+                           second_place=mng.winners[1], third_place=mng.winners[2],
+                           first_forecast=mng.first, second_forecast=mng.second,
+                           third_forecast=mng.third)
 #     pass

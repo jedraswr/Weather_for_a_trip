@@ -9,16 +9,18 @@
 </head>
 <body>
     <div>
-        <h1> So wellcome to the the list of best options for your trip:-)</h1>
+        <h3 align="center" margin="400"> So welcome to the list of best options for your trip:-)</h3>
     </div>
-    <div class="columns">
-        <div class="column col-3">
+    <div class="columns" align="center">
+        <div class="column col-4">
 
             <div container>
                 <h3>The winner is:</h3>
-                {{first_place}}
                 <h5> OBRAZEK </h5>
-                <h4>with it's weather forecast:</h4>
+                    <div color="red">
+                    {{second_place}}
+                    </div>
+                <h3>with it's weather forecast:</h3>
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: gold">
@@ -30,12 +32,14 @@
                 </div>
             </div>
         </div>
-        <div class="column col-6">
+        <div class="column col-4">
             <div container>
                 <h3>The second valid place is:</h3>
                 <h5> OBRAZEK </h5>
-                {{second_place}}
-                <h4>with it's weather forecast:</h4>
+                    <div color="green">
+                    {{second_place}}
+                    </div>
+                <h3>with it's weather forecast:</h3>
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: silver">
@@ -52,15 +56,17 @@
                 </ul>
             </div>
         </div>
-        <div class="column col-9">
+        <div class="column col-4">
             <div container>
                 <h3>The third nice place is:</h3>
                 <h5> OBRAZEK </h5>
-                {{third_place}}
-                <h4>with it's weather forecast:</h4>
+                    <div color="blue">
+                    {{second_place}}
+                    </div>
+                <h3>with it's weather forecast:</h3>
                 <div class="hero bg-grey">
                     <div class="hero-sm">
-                        <div align="center" style="background: bronze">
+                        <div align="center" style="background: beige">
                             {% for tuple in first_forecast %}
                             {{tuple}} <br />
                             {% endfor %}

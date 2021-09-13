@@ -28,7 +28,7 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"a": 5, "b": 1, "c": -1, "d": -3}     #scoring for weather types
+preferences = {"With love:-)": 5, "OK, accepted": 1, "Rather not": -1, "I hate it:-(": -3}     #scoring for weather types
 
 first = []
 second = []
@@ -185,9 +185,9 @@ def find_it(oper_args):
         db_description = db_query[nr_forec].description
         db_temp = db_query[nr_forec].temp
         nr_forec += 1
-        if db_temp >= oper_args[7] and db_temp <= oper_args[8]:
+        if db_temp >= float(oper_args[7]) and db_temp <= float(oper_args[8]):
             temp_score = 2          # scoring for preferred temp.
-        elif db_temp > (oper_args[8] + 8) or db_temp < (oper_args[7] - 8):
+        elif db_temp > (float(oper_args[8]) + 8) or db_temp < (float(oper_args[7]) - 8):
             temp_score = -2         # scoring for unwanted temp.
         else:
             temp_score = 0      # scoring for irrelevant temp.
