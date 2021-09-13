@@ -105,7 +105,7 @@ def db_clean(oper_args):
     find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
     last_update = find_row.date     # powinien zwrócić datę z find_row
     erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
-    db.session.add(erase)
+    db.session.delete(erase)
     db.session.commit()
 
 def format_data():   ### wersja na 3 kolumny

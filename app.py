@@ -54,6 +54,8 @@ def update_forecasts():
                 frc_date = element['dt']
                 frc_content1 = element['weather'][0]['main']
                 frc_content2 = element['weather'][0]['description']
+                if frc_content1 == 'Clear':
+                    frc_description = "Sunnily"
                 if frc_content1 == 'Clouds':
                     if frc_content2 == "few clouds" or frc_content2 == "scattered clouds":
                         frc_description = 'Clouds'
@@ -76,24 +78,27 @@ def update_forecasts():
 if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
     update_forecasts()
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/")
 def get_params():           # będzie pobranie z formularza, na razie jest na sztywno
-    procedure = 'find_it'
-    date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
-    date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
-    Sunnily = "With love:-)"
-    Clouds = "OK, accepted"
-    Overcast = "Rather not"
-    Rain = "I hate it:-("
-    Snow = "Rather not"
-    temp_floor = 18.0
-    temp_cap = 25.0
-    oper_args = [date_from, date_to, Sunnily, Clouds, Overcast, Rain, Snow, temp_floor,
-                temp_cap]
-    mng.callbacks[procedure](oper_args)
-
-get_params()        # będzie wywoływana z formularza
+    return render_template("index.html")
+#     pass
+#     procedure = 'find_it'
+#     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d" )
+#     date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
+#     Sunnily = "With love:-)"
+#     Clouds = "OK, accepted"
+#     Overcast = "Rather not"
+#     Rain = "I hate it:-("
+#     Snow = "Rather not"
+#     temp_floor = 18.0
+#     temp_cap = 25.0
+#     oper_args = [date_from, date_to, Sunnily, Clouds, Overcast, Rain, Snow, temp_floor,
+#                 temp_cap]
+#     mng.callbacks[procedure](oper_args)
+#
+# get_params()        # będzie wywoływana z formularza
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():      # będzie zwracała wyniki do formularza
-    pass
+    return render_template("index.html")
+#     pass
