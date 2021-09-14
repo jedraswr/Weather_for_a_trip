@@ -23,81 +23,95 @@
         <h6 style="color: brown"> All pictures and icons due to courtesy of Pexels and amChart.</h6>
     </div>
     <div class="column col-9">
-        <div style="margin: 20px; 50px; 20px; 52px, color: blue">
+        <div style="margin: 10px; 50px; 0px; 55px">
             <h3 style="color: darkblue">Hi!:-) <br>
                 A couple of days off your work? Another weekend with no plans? Your boss sent you on a surprise vacation?
                 So grab your travel bag, and visit some places abroad. I will find for you some cities with the nice
                 weather, just let me know something about your preferences:
             </h3>
         </div>
-        <div style="margin: 30px">
+        <div style="margin: 25px">
         <form method="POST" action="/results/">
             <div class="form-group">
                 <label class="form-label">First of all let me know the dates, starting and ending your happy time: *</label>
-                <input class="form-input" type="date" value=09/01/2021 name="date_from" width="50">
-                <input class="form-input" type="date" value=09/15/2021 name="date_to" width="50">
+                <input class="form-input" type="date" value=09/01/2021 name="date_from" style="width: 15em">
+                <input class="form-input" type="date" value=09/15/2021 name="date_to" style="width: 15em">
             </div>
                 <h6 style="font-size: 0.7em; color: magenta">
-                    *) Due to fact, that updating the forecasts needs RapidAPI keys and limits,
+                    *) Due to fact, that updating the forecasts needs RapidAPI keys and free transfer limits,
                     for a trial use please check the date between Sept 01 - Sept 15, 2021.
                 </h6>
-            <div class="container">
-                    <div class="form-group">
-                        <label class="form-label">Now let me know about the weather you like or not:</label>
-                            <label><img src="static/day.svg"></label>
-                            <select name="sunnily">
-                            <option id="1a">With love:-)</option>
-                            <option id="1b">OK, accepted</option>
-                            <option id="1c">Rather not</option>
-                            <option id="1d">I hate it:-(</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Clouds  </label>
-                        <select name="clouds">
-                            <option id="2a">With love:-)</option>
-                            <option id="2b">OK, accepted</option>
-                            <option id="2c">Rather not</option>
-                            <option id="2d">I hate it:-(</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Overcast</label>
-                        <select name="overcast">
-                            <option id="3a">With love:-)</option>
-                            <option id="3b">OK, accepted</option>
-                            <option id="3c">Rather not</option>
-                            <option id="3d">I hate it:-(</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Rain    </label>
-                        <select name="rain">
-                            <option id="4a">With love:-)</option>
-                            <option id="4b">OK, accepted</option>
-                            <option id="4c">Rather not</option>
-                            <option id="4d">I hate it:-(</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Snow    </label>
-                        <select name="snow">
-                            <option id="5a">With love:-)</option>
-                            <option id="5b">OK, accepted</option>
-                            <option id="5c">Rather not</option>
-                            <option id="5d">I hate it:-(</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">And finally give me your favorite temperature range (C):</label>
-                        <input class="form-input" type="float" value="20" placeholder="from: 0.0" name="temp_floor">
-                        <input class="form-input" type="float" value="25" placeholder="to: 0.0" name="temp_cap">
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Now let me know about the weather you like or not:</label>
                 </div>
+
+             <div class="columns" style="margin: 0px; 0px; 0px; 20px">
+                <div class="column col-2">
+                            <div align="center">
+                                    <label><img src="static/day.svg"></label><br>
+                                    <select name="sunnily">
+                                    <option id="1a">With love:-)</option>
+                                    <option id="1b">OK, accepted</option>
+                                    <option id="1c">Rather not</option>
+                                    <option id="1d">I hate it:-(</option>
+                                </select>
+                            </div>
+                </div>
+                <div class="column col-2">
+                            <div align="center">
+                                <label><img src="static/cloudy-day-3.svg"></label><br>
+                                <select name="clouds">
+                                    <option id="2a">With love:-)</option>
+                                    <option id="2b">OK, accepted</option>
+                                    <option id="2c">Rather not</option>
+                                    <option id="2d">I hate it:-(</option>
+                                </select>
+                            </div>
+                </div>
+                <div class="column col-2">
+                            <div align="center">
+                                <label><img src="static/cloudy.svg"></label><br>
+                                <select name="overcast">
+                                    <option id="3a">With love:-)</option>
+                                    <option id="3b">OK, accepted</option>
+                                    <option id="3c">Rather not</option>
+                                    <option id="3d">I hate it:-(</option>
+                                </select>
+                            </div>
+                </div>
+                <div class="column col-2">
+                            <div align="center">
+                                <label><img src="static/rainy-6.svg"></label><br>
+                                <select name="rain">
+                                    <option id="4a">With love:-)</option>
+                                    <option id="4b">OK, accepted</option>
+                                    <option id="4c">Rather not</option>
+                                    <option id="4d">I hate it:-(</option>
+                                </select>
+                            </div>
+                </div>
+                <div class="column col-2">
+                            <div align="center">
+                                <label><img src="static/snowy-6.svg"></label><br>
+                                <select name="snow">
+                                    <option id="5a">With love:-)</option>
+                                    <option id="5b">OK, accepted</option>
+                                    <option id="5c">Rather not</option>
+                                    <option id="5d">I hate it:-(</option>
+                                </select>
+                            </div>
+                </div>
+             </div>
+                 <div class="form-group" style="margin: 10px; 0; 0; 0">
+                        <label class="form-label">And finally give me your favorite temperature range from-to (C):</label>
+                        <input class="form-input" type="float" value="19" name="temp_floor" style="width: 5em">
+                        <input class="form-input" type="float" value="23" name="temp_cap" style="width: 5em">
+                 </div>
+
             <div class="form-group">
                     <input class="form-input" type="hidden" value="find_it" name="procedure">
             </div>
-            <div class="form-group">
+            <div class="form-group" align="center">
                     <button type="submit" class="btn btn-primary">So let's check it!</button>
             </div>
         </form>
