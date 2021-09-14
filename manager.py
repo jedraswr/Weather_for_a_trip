@@ -103,8 +103,7 @@ def db_put(oper_args):
 def db_clean(oper_args):
     find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
     last_update = find_row.date     # powinien zwrócić datę z find_row
-    erase = db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
-    db.session.delete(erase)
+    db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
     db.session.commit()
 
 def format_data():   ### wersja na 3 kolumny
@@ -112,12 +111,10 @@ def format_data():   ### wersja na 3 kolumny
     for element in mng.chosen_frc:
         for component in element:
             comp_dt = component[0]
-            if len(component[1]) < 9:
-                comp_sky = str(component[1] + ((9 - len(component[1])) * " "))
             comp_sky = str(component[1])
             # print(comp_sky)
             comp_tmp = str(component[2]) + " C"
-            daily_frc = (comp_dt, comp_sky, comp_tmp)
+            daily_frc = [comp_dt, comp_sky, comp_tmp]
             if nrf == 1:
                 first.append(daily_frc)
             elif nrf == 2:
@@ -133,9 +130,9 @@ def format_data():   ### wersja na 3 kolumny
             mng.third = third
         nrf += 1
         continue
-    print(mng.first)
-    print(mng.second)
-    print(mng.third)
+    # print(mng.first)
+    # print(mng.second)
+    # print(mng.third)
 
 # def format_data(): ### wersja na 9 kolumn - do poprawienia
 #     nrf = 1
@@ -235,5 +232,5 @@ def find_it(oper_args):
     mng.winners.append(mng.locations[city1])
     mng.winners.append(mng.locations[city2])
     mng.winners.append(mng.locations[city3])
-    print(mng.winners)
+    # print(mng.winners)
     format_data()

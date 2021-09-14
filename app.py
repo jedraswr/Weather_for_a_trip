@@ -6,7 +6,7 @@ import requests as requests
 import datetime
 import time
 from manager import mng
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -80,23 +80,6 @@ if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import 
 
 @app.route("/", methods=["POST", "GET"])
 def get_params():
-    if request.method == "POST":
-        response = dict(request.form)
-        date_from = response["date_from"]
-        date_to = response["date_to"]
-        sunnily = response["sunnily"]
-        clouds = response["clouds"]
-        overcast = response["overcast"]
-        rain = response["rain"]
-        snow = response["snow"]
-        temp_floor = response["temp_floor"]
-        temp_cap = response["temp_cap"]
-        procedure = 'find_it'
-        date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
-        date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
-        oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
-                     temp_cap]
-        mng.callbacks[procedure](oper_args)
     return render_template("index.html")
 
 # def get_params():   ### DO WRZUCANIA NA SZTYWNO
@@ -118,8 +101,27 @@ def get_params():
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():                       # będzie zwracała wyniki do formularza
-    return render_template("results.html", first_place=mng.winners[0],
+    if request.method == "POST":
+        response = dict(request.form)
+        date_from = response["date_from"]
+        date_to = response["date_to"]
+        sunnily = response["sunnily"]
+        clouds = response["clouds"]
+        overcast = response["overcast"]
+        rain = response["rain"]
+        snow = response["snow"]
+        temp_floor = response["temp_floor"]
+        temp_cap = response["temp_cap"]
+        procedure = 'find_it'
+        date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
+        date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
+        oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow,
+                     temp_floor, temp_cap]
+        mng.callbacks[procedure](oper_args)
+        return render_template("results.html", first_place=mng.winners[0],
                            second_place=mng.winners[1], third_place=mng.winners[2],
                            first_forecast=mng.first, second_forecast=mng.second,
                            third_forecast=mng.third)
-#     pass
+
+if __name__=="__main__":
+    app.run()

@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
 <body>
-    <div>
-        <h3 align="center" margin="400"> So welcome to the list of best options for your trip:-)</h3>
+    <div margin="200">
+        <h3 align="center"> So welcome to the list of best options for your trip:-)</h3>
     </div>
     <div class="columns" align="center">
         <div class="column col-4">
@@ -18,14 +18,14 @@
                 <h3>The winner is:</h3>
                 <h5> OBRAZEK </h5>
                     <div color="red">
-                    {{second_place}}
+                    {{first_place}}
                     </div>
                 <h3>with it's weather forecast:</h3>
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: gold">
-                            {% for tuple in first_forecast %}
-                            {{tuple}} <br />
+                            {% for list in first_forecast %}
+                            {{list}}<br />
                             {% endfor %}
                         </div>
                     </div>
@@ -43,8 +43,8 @@
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: silver">
-                            {% for tuple in first_forecast %}
-                            {{tuple}} <br />
+                            {% for list in second_forecast %}
+                            {{list}}<br />
                             {% endfor %}
                         </div>
                     </div>
@@ -61,14 +61,14 @@
                 <h3>The third nice place is:</h3>
                 <h5> OBRAZEK </h5>
                     <div color="blue">
-                    {{second_place}}
+                    {{third_place}}
                     </div>
                 <h3>with it's weather forecast:</h3>
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: beige">
-                            {% for tuple in first_forecast %}
-                            {{tuple}} <br />
+                            {% for list in third_forecast %}
+                            {{list}}<br />
                             {% endfor %}
                         </div>
                     </div>
