@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
-<body style="background: lightblue">
+<body>
     <div style="margin: 50px">
-        <h1 align="center" style="color: white"> So welcome to the list of best options for your trip:-)</h1>
+        <h1 align="center" style="color: darkblue"> So welcome to the list of best options for your trip:-)</h1>
     </div>
     <div class="columns" align="center">
         <div class="column col-1">
@@ -17,33 +17,39 @@
         <div class="column col-3">
             <div container>
                 <h3>The winner is:</h3>
-                <img src="static/trophy-uno.gif">
-                    <div style="color: red; font-size: 2em; background-color: white; text: b">
-                        {{first_place}}
+                <gallery>
+                    <img src="static/index/pexels-burst-374815-b.jpg">
+                </gallery>
+                    <div class="text-bold">
+                        <div style="color: red; font-size: 2em; background-color: white">
+                            {{first_place}}
+                        </div>
                     </div>
-                    <div style="margin: 10px">
+                    <div style="margin: 20px">
                         <h6>with it's weather forecast:</h6>
                     </div>
-                    <div align="center" style="background: gold">
-                            {% for key, value in first_forecast.items() %}
-                            {{key}}    {{value}}<br />
-                            {% endfor %}
+                    <div align="center" style="background: gold; border: red">
+                        {% for key, value in first_forecast.items() %}
+                        {{key}} {{value}}<br />
+                        {% endfor %}
                     </div>
             </div>
         </div>
         <div class="column col-3">
             <div container>
                 <h3>Another valid option is:</h3>
-                <img src="static/giphy2c.gif">
-                    <div style="color: green; font-size: 2em; background-color: white">
-                    {{second_place}}
+                <img src="static/icons8-medal-64 (1).png">
+                    <div class="text-bold">
+                        <div style="color: green; font-size: 2em; background-color: white">
+                            {{second_place}}
+                        </div>
                     </div>
-                    <div style="margin: 10px">
+                    <div style="margin: 20px">
                         <h6>with it's weather forecast:</h6>
                     </div>
                     <div align="center" style="background: silver">
                         {% for key, value in second_forecast.items() %}
-                        {{key}}    {{value}}<br />
+                        {{key}} {{value}}<br />
                         {% endfor %}
                     </div>
             </div>
@@ -56,23 +62,24 @@
         <div class="column col-3">
             <div container>
                 <h3>The third nice place is:</h3>
-                <img src="static/giphy3c.gif">
-                    <div style="color: blue; font-size: 2em; background-color: white">
-                    {{third_place}}
+                <img src="static/icons8-medal-64.jpg">
+                    <div class="text-bold">
+                        <div style="color: blue; font-size: 2em; background-color: white">
+                            {{third_place}}
+                        </div>
                     </div>
-                    <div style="margin: 10px">
+                    <div style="margin: 20px">
                         <h6>with it's weather forecast:</h6>
                     </div>
-                    <div align="center" style="background: beige">
-                            {% for key, value in third_forecast.items() %}
-                            {{key}}    {{value}}<br />
-                            {% endfor %}
+                    <div align="center" style="background: brown">
+                        {% for key, value in third_forecast.items() %}
+                        {{key}} {{value}}<br />
+                        {% endfor %}
                     </div>
             </div>
         </div>
         <div class="column col-1">
         </div>
     </div>
-
 </body>
 </html>
