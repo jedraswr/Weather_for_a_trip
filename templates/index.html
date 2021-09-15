@@ -11,16 +11,21 @@
 <div class="container">
   <div class="columns">
     <div class="column col-3">
-        <div container>
+        <div container style="margin: 3px; 0px; 0px; 0px">
             <gallery>
-                <img src="static/pexels-brett-sayles-912364.jpg" width="160" height="130">
-                <img src="static/pexels-pixabay-209831.jpg" width="160" height="130">
-                <img src="static/pexels-ralph-w-lambrecht-1446076.jpg" width="160" height="130">
-                <img src="static/pexels-samuel-theo-manat-silitonga-694587.jpg" width="160" height="130">
-                <img src="static/pexels-tino-schmidt-898578.jpg" width="160" height="130">
+                <img src="static/pexels-nancy-bourque-1209978-b.jpg" width="150" height="110">
+                <img src="static/pexels-toni-ferreira-1518419-c.jpg" width="150" height="110">
+                <img src="static/pexels-burst-374815-b.jpg" width="150" height="110">
+                <img src="static/pexels-pixabay-262113-b.jpg" width="150" height="110">
+                <img src="static/pexels-pixabay-210017-c.jpg" width="150" height="110">
+                <img src="static/pexels-kaique-rocha-109919-b.jpg" width="150" height="110">
+                <img src="static/pexels-nappy-936048.jpg" width="150" height="110">
+                <img src="static/pexels-nout-gons-378570-b.jpg" width="150" height="110">
+                <img src="static/pexels-marta-wave-5876663-c.jpg" width="150" height="110">
+                <img src="static/pexels-min-an-1157557-b.jpg" width="150" height="110">
             </gallery>
         </div>
-        <h6 style="color: brown"> All pictures and icons due to courtesy of Pexels and amChart.</h6>
+        <h6 style="font-size: 0.7em; color: brown"> All pictures and icons due to courtesy of Pexels and amChart.</h6>
     </div>
     <div class="column col-9">
         <div style="margin: 10px; 50px; 0px; 55px">
@@ -34,8 +39,8 @@
         <form method="POST" action="/results/">
             <div class="form-group">
                 <label class="form-label">First of all let me know the dates, starting and ending your happy time: *</label>
-                <input class="form-input" type="date" value=09/01/2021 name="date_from" style="width: 15em">
-                <input class="form-input" type="date" value=09/15/2021 name="date_to" style="width: 15em">
+                <input class="form-input" type="date" name="date_from" style="width: 15em">
+                <input class="form-input" type="date" name="date_to" style="width: 15em">
             </div>
                 <h6 style="font-size: 0.7em; color: magenta">
                     *) Due to fact, that updating the forecasts needs RapidAPI keys and free transfer limits,
@@ -107,10 +112,10 @@
                  </div>
              <div class="columns">
                 <div class="column col-1">
-                    <input class="form-input" type="float" value="19" name="temp_floor" style="width: 5em">
+                    <input class="form-input" type="float" value="19.5" name="temp_floor" style="width: 5em">
                 </div>
                 <div class="column col-1">
-                    <input class="form-input" type="float" value="23" name="temp_cap" style="width: 5em">
+                    <input class="form-input" type="float" value="23.0" name="temp_cap" style="width: 5em">
                 </div>
 
              </div>

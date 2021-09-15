@@ -12,7 +12,9 @@
         <h3 align="center"> So welcome to the list of best options for your trip:-)</h3>
     </div>
     <div class="columns" align="center">
-        <div class="column col-4">
+        <div class="column col-1">
+        </div>
+        <div class="column col-3">
 
             <div container>
                 <h3>The winner is:</h3>
@@ -24,15 +26,15 @@
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: gold">
-                            {% for list in first_forecast %}
-                            {{list}}<br />
+                            {% for key, value in first_forecast.items() %}
+                            {{key}}    {{value}}<br />
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="column col-4">
+        <div class="column col-3">
             <div container>
                 <h3>The second valid place is:</h3>
                 <h5> OBRAZEK </h5>
@@ -43,8 +45,8 @@
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: silver">
-                            {% for list in second_forecast %}
-                            {{list}}<br />
+                            {% for key, value in second_forecast.items() %}
+                            {{key}}    {{value}}<br />
                             {% endfor %}
                         </div>
                     </div>
@@ -52,11 +54,11 @@
             </div>
             <div>
                 <ul style="margin: 30px">
-                    <li style="color: red; margin: 20px"><a href="/">Not satisfied...? Let's have another chance:-)</a></li>
+                    <li style="color: red; margin: 20px"><a href="/">Not satisfied...? Let's try another chance:-)</a></li>
                 </ul>
             </div>
         </div>
-        <div class="column col-4">
+        <div class="column col-3">
             <div container>
                 <h3>The third nice place is:</h3>
                 <h5> OBRAZEK </h5>
@@ -67,13 +69,15 @@
                 <div class="hero bg-grey">
                     <div class="hero-sm">
                         <div align="center" style="background: beige">
-                            {% for list in third_forecast %}
-                            {{list}}<br />
+                            {% for key, value in third_forecast.items() %}
+                            {{key}}    {{value}}<br />
                             {% endfor %}
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="column col-1">
         </div>
     </div>
 
