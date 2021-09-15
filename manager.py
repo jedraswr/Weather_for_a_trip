@@ -43,10 +43,9 @@ cityforec = {}
 class Manager:
     def __init__(self):
         self.callbacks = {}
-        self.get_forecasts = []      # dla wyszukanych prognoz
+        # self.get_forecasts = []      # dla wyszukanych prognoz
         self.locations = {}
         self.preferences = {}
-        self.chosen_frc = []
         self.first = {}
         self.second = {}
         self.third = {}
@@ -107,73 +106,6 @@ def db_clean(oper_args):
     db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
     db.session.commit()
 
-def format_data():   ### wersja na 3 kolumny
-    nrf = 1
-    city_forec = {}
-    for element in mng.chosen_frc:
-        for component in element:
-            comp_dt = component[0]
-            comp_sky = str(component[1])
-            # print(comp_sky)
-            comp_tmp = str(component[2]) + " C"
-            comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
-            city_forec[comp_dt] = comp_skytmp
-            # print(city_forec)
-            # daily_frc = [comp_dt, comp_sky, comp_tmp]
-            # if nrf == 1:
-            #     first.append(daily_frc)
-            # elif nrf == 2:
-            #     second.append(daily_frc)
-            # else:
-            #     third.append(daily_frc)
-            continue
-        # if nrf == 1:
-        #     mng.first = city_forec
-        #     city_forec.clear()
-        # elif nrf == 2:
-        #     mng.second = city_forec
-        #     city_forec.clear()
-        # else:
-        #     mng.third = city_forec
-        #     city_forec.clear()
-        nrf += 1
-        continue
-    # print(mng.first)
-    # print(mng.second)
-    # print(mng.third)
-
-# def format_data(): ### wersja na 9 kolumn - do poprawienia
-#     nrf = 1
-#     for element in mng.chosen_frc:
-#         for component in element:
-#             col_dt.append(component[0])
-#             col_sky.append(component[1])
-#             col_temp.append(str(component[2]) + " C")
-#             continue
-#         # print(col_dt)
-#         # print(col_sky)
-#         # print(col_temp)
-#         if nrf == 1:
-#             mng.first.append(col_dt)
-#             mng.first.append(col_sky)
-#             mng.first.append(col_temp)
-#             # print(mng.first)
-#         elif nrf == 2:
-#             mng.second.append(col_dt)
-#             mng.second.append(col_sky)
-#             mng.second.append(col_temp)
-#             # print(mng.second)
-#         else:
-#             mng.third.append(col_dt)
-#             mng.third.append(col_sky)
-#             mng.third.append(col_temp)
-#             # print(mng.third)
-#         nrf += 1
-#         print(mng.first)
-#         print(mng.second)
-#         print(mng.third)
-#         continue
-
 
 @mng.set("find_it")         # searching and scoring
 def find_it(oper_args):
@@ -228,7 +160,7 @@ def find_it(oper_args):
         continue
     sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
     # print(sorted_scoring)
-    city1 = sorted_scoring[0][0]
+    city1 = sorted_scoring[0][0]        # scorings collection for presentation
     city2 = sorted_scoring[1][0]
     city3 = sorted_scoring[2][0]
     forecast1 = locations_forecasts[city1]
@@ -258,18 +190,6 @@ def find_it(oper_args):
         comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
         mng.third[comp_dt] = comp_skytmp
         continue
-    print("mng1 {}".format(mng.first))
-    print("mng2 {}".format(mng.second))
-    print("mng3 {}".format(mng.third))
-    # print("forecast1 {}".format(forecast1))
-    # print("forecast2 {}".format(forecast2))
-    # print("forecast3 {}".format(forecast3))
-    # mng.chosen_frc.append(forecast1)
-    # mng.chosen_frc.append(forecast2)
-    # mng.chosen_frc.append(forecast3)
-    # print(mng.chosen_frc)
     mng.winners.append(mng.locations[city1])
     mng.winners.append(mng.locations[city2])
     mng.winners.append(mng.locations[city3])
-    # # print(mng.winners)
-    # format_data()
