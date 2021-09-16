@@ -37,6 +37,7 @@ col_dt = []
 col_sky = []
 col_temp = []
 cityforec = {}
+winning_dict = {}
 
 # Management:
 
@@ -163,33 +164,29 @@ def find_it(oper_args):
     city1 = sorted_scoring[0][0]        # scorings collection for presentation
     city2 = sorted_scoring[1][0]
     city3 = sorted_scoring[2][0]
-    forecast1 = locations_forecasts[city1]
-    forecast2 = locations_forecasts[city2]
-    forecast3 = locations_forecasts[city3]
-    for element in forecast1:
-        comp_dt = element[0] + ","
-        comp_sky = str(element[1])
-        # print(comp_sky)
-        comp_tmp = str(element[2]) + " C"
-        comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
-        mng.first[comp_dt] = comp_skytmp
-        continue
-    for element in forecast2:
-        comp_dt = element[0] + ","
-        comp_sky = str(element[1])
-        # print(comp_sky)
-        comp_tmp = str(element[2]) + " C"
-        comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
-        mng.second[comp_dt] = comp_skytmp
-        continue
-    for element in forecast3:
-        comp_dt = element[0] + ","
-        comp_sky = str(element[1])
-        # print(comp_sky)
-        comp_tmp = str(element[2]) + " C"
-        comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
-        mng.third[comp_dt] = comp_skytmp
-        continue
     mng.winners.append(mng.locations[city1])
     mng.winners.append(mng.locations[city2])
     mng.winners.append(mng.locations[city3])
+    procedure = "load_forecasts"
+    oper_args = [1, locations_forecasts[city1]]
+    mng.callbacks[procedure](oper_args)
+    oper_args = [2, locations_forecasts[city2]]
+    mng.callbacks[procedure](oper_args)
+    oper_args = [3, locations_forecasts[city3]]
+    mng.callbacks[procedure](oper_args)
+
+@mng.set("load_forecasts")
+def load_forecasts(oper_args):
+    nr = oper_args[0]
+    for element in oper_args[1]:
+        comp_dt = element[0] + ","
+        comp_sky = str(element[1])
+        # print(comp_sky)
+        comp_tmp = str(element[2]) + " C"
+        comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
+        if nr == 1:
+            mng.first[comp_dt] = comp_skytmp
+        if nr == 2:
+            mng.second[comp_dt] = comp_skytmp
+        if nr == 3:
+            mng.third[comp_dt] = comp_skytmp
