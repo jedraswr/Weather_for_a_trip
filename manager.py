@@ -51,6 +51,7 @@ class Manager:
         self.second = {}
         self.third = {}
         self.winners = []
+        self.warning_msg = ""
 
     def set(self, procedure):
         def decorate(callback):

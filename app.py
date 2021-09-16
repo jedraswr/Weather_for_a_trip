@@ -5,7 +5,7 @@ import sys
 import requests as requests
 import datetime
 import time
-from manager import mng
+from manager import mng, Updates
 from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 
@@ -101,10 +101,27 @@ def get_params():
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():                       # będzie zwracała wyniki do formularza
+    find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
+    last_update = find_row.date
+    warning = 0
+    warning_msg = "It seems, that there was a problem with the dates from-to. " \
+                  "Please return to the main page, and make sure that dates " \
+                  "have been set properly."
     if request.method == "POST":
         response = dict(request.form)
         date_from = response["date_from"]
+        # print("df {}".format(date_from))
+        # print(type(date_from))
+        if not date_from:
+            date_from = str(last_update)
+            warning = 1
         date_to = response["date_to"]
+        # print("dt {}".format(date_to))
+        if not date_to:
+            date_to = str(last_update)
+            warning = 1
+        if warning == 1:
+            mng.warning_msg = warning_msg
         sunnily = response["sunnily"]
         clouds = response["clouds"]
         overcast = response["overcast"]
@@ -121,7 +138,7 @@ def put_scores():                       # będzie zwracała wyniki do formularza
         return render_template("results.html", first_place=mng.winners[0],
                            second_place=mng.winners[1], third_place=mng.winners[2],
                            first_forecast=mng.first, second_forecast=mng.second,
-                           third_forecast=mng.third)
+                           third_forecast=mng.third, warning_msg=mng.warning_msg)
 
 if __name__=="__main__":
     app.run()
