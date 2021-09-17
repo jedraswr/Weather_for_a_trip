@@ -24,7 +24,7 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"With love:-)": 5, "OK, accepted": 2, "Rather not": -2, "I hate it:-(": -7}     #scoring for weather types
+preferences = {"With love:-)": 10, "OK, accepted": 3, "Rather not": -3, "I hate it:-(": -10}     #scoring for weather types
 
 col_dt = []
 col_sky = []
@@ -35,7 +35,6 @@ col_temp = []
 class Manager:
     def __init__(self):
         self.callbacks = {}
-        # self.get_forecasts = []      # dla wyszukanych prognoz
         self.locations = {}
         self.preferences = {}
         self.first = {}
@@ -43,6 +42,8 @@ class Manager:
         self.third = {}
         self.winners = []
         self.warning_msg = ""
+        self.data_range = ""
+        self.get_forecasts = []
 
     def set(self, procedure):
         def decorate(callback):
@@ -107,6 +108,7 @@ def find_it(oper_args):
     db_query = db.session.query(Forecasts).filter(Forecasts.date >= date_start).\
             filter(Forecasts.date <= date_end).all()
     mng.get_forecasts = db_query
+    print(mng.get_forecasts)
     nr_forec = 0
     for element in db_query:            # searching through forecasts database
         db_city = db_query[nr_forec].city
@@ -115,9 +117,9 @@ def find_it(oper_args):
         db_temp = db_query[nr_forec].temp
         nr_forec += 1
         if db_temp >= float(oper_args[7]) and db_temp <= float(oper_args[8]):
-            temp_score = 3          # scoring for preferred temp.
+            temp_score = 5          # scoring for preferred temp.
         elif db_temp > (float(oper_args[8]) + 7) or db_temp < (float(oper_args[7]) - 7):
-            temp_score = -3         # scoring for unwanted temp.
+            temp_score = -5         # scoring for unwanted temp.
         else:
             temp_score = 0          # scoring for irrelevant temp.
         scoring_sunnily = mng.preferences[oper_args[2]]  # scorings for different weathers

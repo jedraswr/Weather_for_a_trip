@@ -75,7 +75,15 @@ if ra_key:
 @app.route("/", methods=["POST", "GET"])
 def get_params():
     mng.warning_msg = ""
-    return render_template("index.html")
+    find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
+    start_date = find_row.date
+    end_date = start_date + datetime.timedelta(days=15)
+    date_range = "*) Forecasts include records from " + str(start_date) + " to " + \
+                 str(end_date) + "."
+    print(date_range)
+    # if request.method == "GET":
+    mng.date_range = date_range
+    return render_template("index.html", date_range=mng.date_range)
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():                       # będzie zwracała wyniki do formularza
