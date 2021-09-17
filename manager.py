@@ -1,11 +1,7 @@
 # Imports and initiations:
-import os
-import json
-import sys
-import requests as requests
 import datetime
 import time
-from flask import Flask, render_template, request, redirect
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -28,16 +24,11 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"With love:-)": 5, "OK, accepted": 1, "Rather not": -1, "I hate it:-(": -7}     #scoring for weather types
+preferences = {"With love:-)": 5, "OK, accepted": 2, "Rather not": -2, "I hate it:-(": -7}     #scoring for weather types
 
-first = []
-second = []
-third = []
 col_dt = []
 col_sky = []
 col_temp = []
-cityforec = {}
-winning_dict = {}
 
 # Management:
 
@@ -108,8 +99,7 @@ def db_clean(oper_args):
     db.session.query(Forecasts).filter(Forecasts.impdate != last_update).delete()
     db.session.commit()
 
-
-@mng.set("find_it")         # searching and scoring
+@mng.set("find_it")         # searching and scoring forecasts
 def find_it(oper_args):
     date_start = int(time.mktime(oper_args[0].timetuple()))
     date_end = (oper_args[1]) + datetime.timedelta(hours=23)
@@ -126,10 +116,10 @@ def find_it(oper_args):
         nr_forec += 1
         if db_temp >= float(oper_args[7]) and db_temp <= float(oper_args[8]):
             temp_score = 3          # scoring for preferred temp.
-        elif db_temp > (float(oper_args[8]) + 8) or db_temp < (float(oper_args[7]) - 8):
+        elif db_temp > (float(oper_args[8]) + 7) or db_temp < (float(oper_args[7]) - 7):
             temp_score = -3         # scoring for unwanted temp.
         else:
-            temp_score = 0      # scoring for irrelevant temp.
+            temp_score = 0          # scoring for irrelevant temp.
         scoring_sunnily = mng.preferences[oper_args[2]]  # scorings for different weathers
         scoring_clouds = mng.preferences[oper_args[3]]
         scoring_overcast = mng.preferences[oper_args[4]]
@@ -183,7 +173,7 @@ def load_forecasts(oper_args):
         comp_dt = element[0] + ","
         comp_sky = str(element[1])
         # print(comp_sky)
-        comp_tmp = str(element[2]) + " C"
+        comp_tmp = str(round(element[2],1)) + " C"
         comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
         if nr == 1:
             mng.first[comp_dt] = comp_skytmp

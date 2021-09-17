@@ -1,12 +1,11 @@
 # Imports and initiations:
 import os
 import json
-import sys
 import requests as requests
 import datetime
 import time
 from manager import mng, Updates
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -15,10 +14,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///manager.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-city_frc = []
-ask_for = []
-
-# Database update:
+# Database update:       # to start, please enter your RapidAPI key to rapidapikey.txt
 try:
     ra_key_file = open('rapidapikey.txt', 'r', encoding='utf-8')
 except FileNotFoundError:
@@ -53,7 +49,7 @@ def update_forecasts():
                 frc_content1 = element['weather'][0]['main']
                 frc_content2 = element['weather'][0]['description']
                 if frc_content1 == 'Clear':
-                    frc_description = "Sunnily"
+                    frc_description = 'Sunnily'
                 if frc_content1 == 'Clouds':
                     if frc_content2 == "few clouds" or frc_content2 == "scattered clouds":
                         frc_description = 'Clouds'
@@ -73,40 +69,21 @@ def update_forecasts():
     oper_args = []
     mng.callbacks[procedure](oper_args)
 
-if ra_key:                  # trzeba wpisać swój klucz do pliku, żeby import zadziałał
+if ra_key:
     update_forecasts()
-
-
 
 @app.route("/", methods=["POST", "GET"])
 def get_params():
+    mng.warning_msg = ""
     return render_template("index.html")
-
-# def get_params():   ### DO WRZUCANIA NA SZTYWNO
-#     procedure = 'find_it'
-#     date_from = datetime.datetime.strptime('2021-09-05', "%Y-%m-%d")
-#     date_to = datetime.datetime.strptime('2021-09-10', "%Y-%m-%d")
-#     sunnily = "a"   # "With love:-)"
-#     clouds = "b"    # "OK, accepted"
-#     overcast = "c"  # "Rather not"
-#     rain = "d"      # "I hate it:-("
-#     snow = "c"      # "Rather not"
-#     temp_floor = 18.0
-#     temp_cap = 25.0
-#     oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow, temp_floor,
-#                 temp_cap]
-#     mng.callbacks[procedure](oper_args)
-#
-# get_params()        # będzie wywoływana z formularza
 
 @app.route("/results/", methods=["POST", "GET"])
 def put_scores():                       # będzie zwracała wyniki do formularza
     find_row = db.session.query(Updates).filter(Updates.note == "last_update").first()
     last_update = find_row.date
     warning = 0
-    warning_msg = "It seems, that there was a problem with the dates from-to. " \
-                  "Please return to the main page, and make sure that dates " \
-                  "have been set properly."
+    warning_msg = "Ooops...! It seems, that there was a problem with given assumptions. "\
+                  "Please return to the main page, and check dates and temps."
     if request.method == "POST":
         response = dict(request.form)
         date_from = response["date_from"]
@@ -114,27 +91,37 @@ def put_scores():                       # będzie zwracała wyniki do formularza
         # print(type(date_from))
         if not date_from:
             date_from = str(last_update)
-            warning = 1
+            warning = 1                     # a trigger for warning message
+        date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
         date_to = response["date_to"]
         # print("dt {}".format(date_to))
         if not date_to:
             date_to = str(last_update)
             warning = 1
-        if warning == 1:
-            mng.warning_msg = warning_msg
+        date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
+        if date_to < date_from:
+            date_from = datetime.datetime.strptime(str(last_update), "%Y-%m-%d")
+            date_to = datetime.datetime.strptime(str(last_update), "%Y-%m-%d")
+            warning = 1
         sunnily = response["sunnily"]
         clouds = response["clouds"]
         overcast = response["overcast"]
         rain = response["rain"]
         snow = response["snow"]
         temp_floor = response["temp_floor"]
+        if not temp_floor:
+            temp_floor = 0
+            warning = 1
         temp_cap = response["temp_cap"]
+        if not temp_cap:
+            temp_cap = 0
+            warning = 1
         procedure = 'find_it'
-        date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
-        date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
         oper_args = [date_from, date_to, sunnily, clouds, overcast, rain, snow,
                      temp_floor, temp_cap]
         mng.callbacks[procedure](oper_args)
+        if warning == 1:
+            mng.warning_msg = warning_msg
         return render_template("results.html", first_place=mng.winners[0],
                            second_place=mng.winners[1], third_place=mng.winners[2],
                            first_forecast=mng.first, second_forecast=mng.second,

@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
 <body>
-<!--    <figure class="figure">-->
-<!--        <img class="img-responsive" src="static/pexels-francesco-ungaro-281260.jpg" alt="Blue Sky">-->
         <h5 align="center" style="color: magenta">{{warning_msg}}</h5>
-        <div style="margin: 50px">
+        <div style="margin: 40px">
             <h1 align="center" style="color: darkblue"> So welcome to the list of best options for your trip:-)</h1>
         </div>
         <div class="columns" align="center">
@@ -20,14 +18,16 @@
             <div class="column col-3">
                 <div container>
                     <h3>The winner is:</h3>
-                    <gallery>
-                        <img src="C:\Users\Lenovo\PycharmProjects\Weather_for_a_trip\static\pexels-burst-374815-c.jpg" width="150" height="110">
-                    </gallery>
-                    <div class="text-bold">
-                        <div style="color: red; font-size: 2em; background-color: white">
-                            {{first_place}}
+                        <div class="d-inline-block">
+                            <gallery>
+                                <img src="/static/trophy-uno.gif" width="150" height="110">
+                            </gallery>
+                            <div class="text-bold">
+                                <div style="color: red; font-size: 2em; background-color: white">
+                                    {{first_place}}
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     <div style="margin: 20px">
                         <h6>with it's weather forecast:</h6>
                     </div>
@@ -42,7 +42,7 @@
                 <div container>
                     <h3>Another valid option is:</h3>
                     <gallery>
-                        <img src="static/pexels-burst-374815-c.jpg" width="150" height="110">
+                        <img src="/static/giphy2c.gif" width="150" height="110">
                     </gallery>
                     <div class="text-bold">
                         <div style="color: green; font-size: 2em; background-color: white">
@@ -68,7 +68,7 @@
                 <div container>
                     <h3>The third nice place is:</h3>
                     <gallery>
-                        <img url="static/pexels-burst-374815-c.jpg" width="150" height="110">
+                        <img src="/static/giphy3c.gif" width="150" height="110">
                     </gallery>
                     <div class="text-bold">
                         <div style="color: blue; font-size: 2em; background-color: white">
@@ -78,7 +78,7 @@
                     <div style="margin: 20px">
                         <h6>with it's weather forecast:</h6>
                     </div>
-                    <div align="center" style="background: brown">
+                    <div align="center" style="background: #ff793f">
                         {% for key, value in third_forecast.items() %}
                         {{key}} {{value}}<br />
                         {% endfor %}
@@ -88,6 +88,5 @@
             <div class="column col-1">
             </div>
         </div>
-<!--    </figure>-->
 </body>
 </html>
