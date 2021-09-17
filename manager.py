@@ -108,7 +108,6 @@ def find_it(oper_args):
     db_query = db.session.query(Forecasts).filter(Forecasts.date >= date_start).\
             filter(Forecasts.date <= date_end).all()
     mng.get_forecasts = db_query
-    print(mng.get_forecasts)
     nr_forec = 0
     for element in db_query:            # searching through forecasts database
         db_city = db_query[nr_forec].city
@@ -150,10 +149,8 @@ def find_it(oper_args):
             locations_forecasts[db_city] = first_set
         else:
             locations_forecasts[db_city].append(daily_keys)
-        # print(locations_forecasts)
         continue
     sorted_scoring = sorted(locations_scoring.items(), key=lambda kv: kv[1], reverse=True)
-    # print(sorted_scoring)
     city1 = sorted_scoring[0][0]        # scorings collection for presentation
     city2 = sorted_scoring[1][0]
     city3 = sorted_scoring[2][0]
@@ -174,7 +171,6 @@ def load_forecasts(oper_args):
     for element in oper_args[1]:
         comp_dt = element[0] + ","
         comp_sky = str(element[1])
-        # print(comp_sky)
         comp_tmp = str(round(element[2],1)) + " C"
         comp_skytmp = "  " + comp_sky + ",  " + comp_tmp
         if nr == 1:

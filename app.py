@@ -95,14 +95,11 @@ def put_scores():                       # będzie zwracała wyniki do formularza
     if request.method == "POST":
         response = dict(request.form)
         date_from = response["date_from"]
-        # print("df {}".format(date_from))
-        # print(type(date_from))
         if not date_from:
             date_from = str(last_update)
             warning = 1                     # a trigger for warning message
         date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
         date_to = response["date_to"]
-        # print("dt {}".format(date_to))
         if not date_to:
             date_to = str(last_update)
             warning = 1
