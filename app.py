@@ -80,7 +80,6 @@ def get_params():
     end_date = start_date + datetime.timedelta(days=15)
     date_range = "*) Forecasts include records from " + str(start_date) + " to " + \
                  str(end_date) + "."
-    print(date_range)
     # if request.method == "GET":
     mng.date_range = date_range
     return render_template("index.html", date_range=mng.date_range)

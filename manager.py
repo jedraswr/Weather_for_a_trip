@@ -108,6 +108,7 @@ def find_it(oper_args):
     db_query = db.session.query(Forecasts).filter(Forecasts.date >= date_start).\
             filter(Forecasts.date <= date_end).all()
     mng.get_forecasts = db_query
+    locations_forecasts.clear()
     nr_forec = 0
     for element in db_query:            # searching through forecasts database
         db_city = db_query[nr_forec].city
@@ -126,7 +127,6 @@ def find_it(oper_args):
         scoring_overcast = mng.preferences[oper_args[4]]
         scoring_rain = mng.preferences[oper_args[5]]
         scoring_snow = mng.preferences[oper_args[6]]
-        # print(mng.preferences)
         if db_description == "Sunnily":
             descr_score = scoring_sunnily
         if db_description == "Clouds":
@@ -154,9 +154,13 @@ def find_it(oper_args):
     city1 = sorted_scoring[0][0]        # scorings collection for presentation
     city2 = sorted_scoring[1][0]
     city3 = sorted_scoring[2][0]
+    mng.winners.clear()
     mng.winners.append(mng.locations[city1])
     mng.winners.append(mng.locations[city2])
     mng.winners.append(mng.locations[city3])
+    mng.first.clear()
+    mng.second.clear()
+    mng.third.clear()
     procedure = "load_forecasts"
     oper_args = [1, locations_forecasts[city1]]
     mng.callbacks[procedure](oper_args)
@@ -179,3 +183,4 @@ def load_forecasts(oper_args):
             mng.second[comp_dt] = comp_skytmp
         if nr == 3:
             mng.third[comp_dt] = comp_skytmp
+
