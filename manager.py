@@ -43,7 +43,6 @@ class Manager:
         self.winners = []
         self.warning_msg = ""
         self.data_range = ""
-        self.get_forecasts = []
 
     def set(self, procedure):
         def decorate(callback):
@@ -107,7 +106,6 @@ def find_it(oper_args):
     date_end = int(time.mktime(date_end.timetuple()))
     db_query = db.session.query(Forecasts).filter(Forecasts.date >= date_start).\
             filter(Forecasts.date <= date_end).all()
-    mng.get_forecasts = db_query
     locations_forecasts.clear()
     nr_forec = 0
     for element in db_query:            # searching through forecasts database
