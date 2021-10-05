@@ -50,7 +50,7 @@ def update_forecasts():
                 frc_content2 = element['weather'][0]['description']
                 if frc_content1 == 'Clear':
                     frc_description = 'Sunnily'
-                if frc_content1 == 'Clouds':
+                elif frc_content1 == 'Clouds':
                     if frc_content2 == "few clouds" or frc_content2 == "scattered clouds":
                         frc_description = 'Clouds'
                     else:
