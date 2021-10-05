@@ -181,4 +181,3 @@ def load_forecasts(oper_args):
             mng.second[comp_dt] = comp_skytmp
         if nr == 3:
             mng.third[comp_dt] = comp_skytmp
-
