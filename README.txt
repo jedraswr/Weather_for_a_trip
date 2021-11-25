@@ -6,5 +6,5 @@ Used technologies:
 - SQLAlchemy.
 Project includes weather forecast database produced by Open Weather Map,
 for the days between Sep 01 - Sep 16, 2021. To unblock the function of
-forecast update, please enter your RapidAPI key to file rapidapikey.txt;
+forecast update, please enter your RapidAPI key to the file rapidapikey.txt;
 because of limits of API loads an update may take obout 3 minutes.
