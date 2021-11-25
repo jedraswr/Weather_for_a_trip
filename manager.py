@@ -24,7 +24,8 @@ locations = {'amsterdam,nl': 'Amsterdam',  'athens,gr': 'Athens',
              'tallinn,ee': 'Tallinn', 'valletta,mt': 'Valletta', 'vienna,at': 'Vienna',
              'vilnius,lt': 'Vilnius', 'warsaw,pl': 'Warsaw', 'zagreb,hr': 'Zagreb',
 }
-preferences = {"With love:-)": 10, "OK, accepted": 3, "Rather not": -3, "I hate it:-(": -10}     #scoring for weather types
+preferences = {"With love:-)": 10, "OK, accepted": 3, "Rather not": -3, "I hate it:-(": -10}
+                                                                #scoring for weather types
 
 col_dt = []
 col_sky = []
@@ -167,7 +168,7 @@ def find_it(oper_args):
     oper_args = [3, locations_forecasts[city3]]
     mng.callbacks[procedure](oper_args)
 
-@mng.set("load_forecasts")
+@mng.set("load_forecasts")              # formatting and loading forecasts for presetnation
 def load_forecasts(oper_args):
     nr = oper_args[0]
     for element in oper_args[1]:
